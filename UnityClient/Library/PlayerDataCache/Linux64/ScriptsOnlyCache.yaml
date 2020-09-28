@@ -83,79 +83,79 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11272}
+    - Class: 114
+      Script: {instanceID: 11346}
+    - Class: 114
+      Script: {instanceID: 11368}
+    - Class: 114
+      Script: {instanceID: 11456}
+    - Class: 114
       Script: {instanceID: 11458}
     - Class: 114
-      Script: {instanceID: 11532}
+      Script: {instanceID: 11496}
     - Class: 114
-      Script: {instanceID: 11554}
+      Script: {instanceID: 11616}
     - Class: 114
-      Script: {instanceID: 11642}
+      Script: {instanceID: 11686}
     - Class: 114
-      Script: {instanceID: 11644}
+      Script: {instanceID: 11732}
     - Class: 114
-      Script: {instanceID: 11682}
+      Script: {instanceID: 11834}
     - Class: 114
-      Script: {instanceID: 11802}
+      Script: {instanceID: 11928}
     - Class: 114
-      Script: {instanceID: 11870}
+      Script: {instanceID: 11952}
     - Class: 114
-      Script: {instanceID: 11916}
+      Script: {instanceID: 11956}
     - Class: 114
-      Script: {instanceID: 12018}
-    - Class: 114
-      Script: {instanceID: 12112}
-    - Class: 114
-      Script: {instanceID: 12136}
+      Script: {instanceID: 12076}
     - Class: 114
       Script: {instanceID: 12140}
     - Class: 114
-      Script: {instanceID: 12260}
+      Script: {instanceID: 12216}
     - Class: 114
-      Script: {instanceID: 12324}
+      Script: {instanceID: 12294}
     - Class: 114
-      Script: {instanceID: 12400}
+      Script: {instanceID: 12350}
     - Class: 114
-      Script: {instanceID: 12478}
+      Script: {instanceID: 12368}
     - Class: 114
-      Script: {instanceID: 12534}
+      Script: {instanceID: 12414}
     - Class: 114
-      Script: {instanceID: 12552}
+      Script: {instanceID: 12474}
+    - Class: 114
+      Script: {instanceID: 12578}
+    - Class: 114
+      Script: {instanceID: 12584}
     - Class: 114
       Script: {instanceID: 12596}
     - Class: 114
-      Script: {instanceID: 12656}
+      Script: {instanceID: 12616}
     - Class: 114
-      Script: {instanceID: 12760}
-    - Class: 114
-      Script: {instanceID: 12766}
-    - Class: 114
-      Script: {instanceID: 12778}
+      Script: {instanceID: 12630}
     - Class: 114
       Script: {instanceID: 12798}
     - Class: 114
-      Script: {instanceID: 12812}
+      Script: {instanceID: 12828}
     - Class: 114
-      Script: {instanceID: 12978}
+      Script: {instanceID: 12850}
     - Class: 114
-      Script: {instanceID: 13008}
+      Script: {instanceID: 12902}
     - Class: 114
-      Script: {instanceID: 13030}
+      Script: {instanceID: 13004}
     - Class: 114
-      Script: {instanceID: 13082}
+      Script: {instanceID: 13064}
     - Class: 114
-      Script: {instanceID: 13184}
+      Script: {instanceID: 13070}
     - Class: 114
-      Script: {instanceID: 13244}
+      Script: {instanceID: 13248}
     - Class: 114
-      Script: {instanceID: 13250}
+      Script: {instanceID: 13292}
     - Class: 114
-      Script: {instanceID: 13428}
+      Script: {instanceID: 13312}
     - Class: 114
-      Script: {instanceID: 13472}
-    - Class: 114
-      Script: {instanceID: 13492}
-    - Class: 114
-      Script: {instanceID: 13512}
+      Script: {instanceID: 13332}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 122
@@ -866,4 +866,4 @@ ScriptsOnlyBuild:
   platform: 24
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: /home/jsuarez/FileStruct/Git/neural-mmo/forge/embyr/UnityClient/neural-mmo.x86_64
+  playerPath: /home/sme/neural-mmo/forge/embyr/UnityClient/neural-mmo-pcg.x86_64

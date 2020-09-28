@@ -81,7 +81,7 @@ public class Comms: MonoBehaviour
 
 				//Message back to server. Can use this to
 				//implement client control in the future
-				string msg = "Recieved packet " + numPackets.ToString() + " from Server";
+				string msg = "Received packet " + numPackets.ToString() + " from Server";
 				w.SendString(msg);
 				Debug.Log(msg);
 			}
