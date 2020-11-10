@@ -47,6 +47,9 @@ public class Environment: MonoBehaviour
 
     GameObject cubePrefab;
     GameObject forestPrefab;
+    GameObject treePrefab;
+    GameObject orePrefab;
+
     GameObject nuPrefab;
     GameObject resources;
     Console    console;
@@ -60,15 +63,15 @@ public class Environment: MonoBehaviour
     MeshRenderer renderer;
 
     void addPair(string name, int idx) {
-      GameObject prefab = this.addMat(name);
-      this.matIdxs[name] = idx;
+      GameObject prefab = this.addMat(name); 
+        this.matIdxs[name] = idx;
       this.idxMats[idx]  = name;
       this.idxPrefabs[idx]  = prefab;
       this.addMat(name);
     }
 
     GameObject addMat(string name) {
-      GameObject prefab = Resources.Load("Prefabs/Tiles/" + name) as GameObject;
+        GameObject prefab = Resources.Load("Prefabs/Tiles/" + name) as GameObject;
       this.matPrefabs[name]  = prefab;
       return prefab;
     }
@@ -81,7 +84,9 @@ public class Environment: MonoBehaviour
       this.cubeMatl     = Resources.Load("Prefabs/Tiles/CubeMatl") as Material;
       this.values       = new Texture2D(80, 80);
       this.cubePrefab   = Resources.Load("Prefabs/Cube") as GameObject;
-      this.forestPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Reed") as GameObject;
+      this.forestPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Reed") as GameObject; 
+      this.treePrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Tree") as GameObject;
+      this.orePrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/RockGrey1") as GameObject;
       this.console      = GameObject.Find("Console").GetComponent<Console>();
       this.shader       = Shader.Find("Standard");
 
@@ -91,6 +96,8 @@ public class Environment: MonoBehaviour
       this.addPair("Scrub", 3);
       this.addPair("Forest", 4);
       this.addPair("Stone0a", 5);
+      this.addPair("Orerock", 6);
+      this.addPair("Tree", 7);
 
       this.addMat("Stone0a");
       this.addMat("Stone1a");
@@ -166,12 +173,32 @@ public class Environment: MonoBehaviour
          List<object> row = (List<object>) map[r];
          for(int c=0; c<mapSz; c++) {
             int val = System.Convert.ToInt32(row[c]);
-            if (this.idxMats[val] == "Forest") {
-               this.env[r, c]["Forest"].SetActive(true);
-            } else if (this.idxMats[val] == "Scrub") {
-               this.env[r, c]["Forest"].SetActive(false);
+                if (this.idxMats[val] == "Forest") {
+                    this.env[r, c]["Forest"].SetActive(true);
+                    if (this.env[r, c].ContainsKey("Tree")) {
+                        this.env[r, c]["Tree"].SetActive(false);
+                    }
+                } else if (this.idxMats[val] == "Scrub") {
+                    this.env[r, c]["Forest"].SetActive(false);
+                    if (this.env[r, c].ContainsKey("Tree")) { 
+                    this.env[r, c]["Tree"].SetActive(false);}
+                } 
+                else {
+                    if (this.env[r, c].ContainsKey("Tree"))
+                    {
+                        this.env[r, c]["Tree"].SetActive(true);
+                    }
+            } if (this.idxMats[val] == "Orerock")
+                {
+                    if (this.env[r, c].ContainsKey("Orerock")){
+                        this.env[r, c]["Orerock"].SetActive(true); }
+                }
+            else
+                {
+                    if (this.env[r, c].ContainsKey("Orerock")){
+                        this.env[r, c]["Orerock"].SetActive(false); }
+                }
             }
-         }
       }
      //this.values = Texture2D.grayTexture;
     }
@@ -581,15 +608,34 @@ public class Environment: MonoBehaviour
             cube.transform.SetParent(chunk.transform);
             this.env[R+r, C+c]["block"] = cube;
 
-            if (this.idxMats[val] == "Forest" || this.idxMats[val] == "Scrub") { 
+            if (this.idxMats[val] == "Forest" || this.idxMats[val] == "Scrub" || this.idxMats[val] == "Tree") { 
                GameObject forest = Instantiate(this.forestPrefab) as GameObject;
                forest.transform.position = cube.transform.position;
-               forest.transform.localScale    = new Vector3(0.9f, 0.20f, 0.9f);
+               forest.transform.localScale    = new Vector3(0.9f, 0.2f, 0.9f);
                forest.transform.eulerAngles   = new Vector3(0, Random.Range(0, 360), 0);
                forest.transform.SetParent(this.resources.transform);
                this.env[R+r, C+c]["Forest"] = forest;
             }
-         }
+                if (this.idxMats[val] == "Tree")
+                {
+                    GameObject tree = Instantiate(this.treePrefab) as GameObject;
+                    tree.transform.position = cube.transform.position;
+                    tree.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    tree.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+                    tree.transform.SetParent(this.resources.transform);
+                    this.env[R + r, C + c]["Tree"] = tree;
+                }
+                if (this.idxMats[val] == "Orerock")
+                {
+
+                    GameObject orerock = Instantiate(this.orePrefab) as GameObject;
+                    orerock.transform.position = cube.transform.position;
+                    orerock.transform.localScale = new Vector3(0.2f, 0.6f, 0.2f);
+                    orerock.transform.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+                    orerock.transform.SetParent(this.resources.transform);
+                    this.env[R + r, C + c]["Orerock"] = orerock;
+                }
+            }
       }
       //StaticBatchingUtility.Combine(chunk);
       combineMeshes(chunk, this.cubeMatl);
@@ -635,7 +681,7 @@ public class Environment: MonoBehaviour
       {
          string cmd = this.cmd;
          Debug.Log(cmd);
-         if (this.overlays.ContainsKey(cmd))
+         if (this.overlays != null && this.overlays.ContainsKey(cmd))
          {
             this.overlayMatl.SetTexture("_Overlay", this.values);
          } else if (cmd == "env")
