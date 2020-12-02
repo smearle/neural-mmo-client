@@ -42,12 +42,12 @@ public class Client : MonoBehaviour
 
       tickFrac = 0;
       if(this.comms.newConnection) {
-         this.environment.UpdateTerrain(packet);
          this.comms.newConnection = false;
+         this.environment.initTerrain(packet);
       }
 
       this.environment.UpdateMap(packet);
-      this.playerManager.UpdatePlayers(packet);
-      this.ui.UpdateFPS(this.deltaTime);
+      this.playerManager.UpdateEntities(packet);
+      this.ui.UpdateUI(packet, this.deltaTime);
    }
 }

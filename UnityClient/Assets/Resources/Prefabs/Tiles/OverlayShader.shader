@@ -5,6 +5,8 @@ Shader "Unlit/OverlayShader"
     Properties
     {
         [NoScaleOffset] _Overlay("Base (RGB) Trans (A)", 2D) = "white" {}
+        _PanParams("PanParams", Vector) = (0, 0, 0, 0)
+        _SizeParams ("SizeParams", Vector) = (0, 0, 0, 0)
     }
         SubShader
     {
@@ -29,6 +31,8 @@ Shader "Unlit/OverlayShader"
             };
 
             sampler2D _Overlay;
+            float4 _PanParams;
+            float4 _SizeParams;
 
             v2f vert(float4 pos : POSITION, float2 uv : TEXCOORD0)
             {
@@ -40,12 +44,20 @@ Shader "Unlit/OverlayShader"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                //pos = floor(i.worldPos * 20);
-                //checker = _Overlay * checker;
                 float4 pos = i.worldPos;
-                pos.xz = (floor(pos.xz + 0.5) + 0.5) / 80;
 
-                //return fixed4(1.0, 0.0, 0.0, 1.0);
+                //pos.x = pos.x - _PanParams.z + _SizeParams.x;
+                //pos.z = pos.z - _PanParams.w + _SizeParams.x;
+
+                pos.xz = (floor(pos.xz + 0.5) + 0.5) / (2*_SizeParams.x);
+
+                //Don't wrap around
+                if (pos.x <= 0 || pos.x >= 1.0 || pos.z <= 0 || pos.z >= 1.0)
+                {
+                    return fixed4(0, 0, 0, 0);
+                }
+                
+                //Index value from overlay image
                 fixed4 tex = tex2Dlod(_Overlay, float4(pos.z, pos.x, 0, 0));
                 float intensity = max(tex.r, max(tex.g, tex.b));
                 if (intensity == 0)
@@ -56,11 +68,7 @@ Shader "Unlit/OverlayShader"
                 tex.a   = max(0.7, intensity);
                 tex.rgb = tex.rgb / tex.a;
                 return tex;
-
-                return fixed4(pos.x, pos.z, 0, 1.0);
-                return fixed4(1.0, 0.0, 0.0, 1.0);
-                return normalize(floor(i.worldPos));
-                return normalize(floor(i.vertex / 20));
+                //return fixed4(pos.x, pos.z, 0, 1.0);
             }
             ENDCG
         }
