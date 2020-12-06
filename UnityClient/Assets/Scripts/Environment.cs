@@ -197,8 +197,8 @@ public class EnvMaterials : MonoBehaviour
         this.idxObjs = new Dictionary<int, GameObject>();
         this.strObjs = new Dictionary<string, GameObject>();
 
-        //this.AddBlock("Lava", 0, 0);
-        this.idxStrs.Add(0, "Sand");
+        this.AddBlock("Lava", 0, 0);
+        //this.idxStrs.Add(0, "Sand");
         this.idxStrs.Add(1, "Sand");
         this.AddBlock("Grass", 0, 2);
         this.AddBlock("Scrub", 0, 3);
@@ -303,6 +303,7 @@ public class Environment : MonoBehaviour
     GameObject forestPrefab;
     GameObject treePrefab;
     GameObject orerockPrefab;
+    GameObject lava1Prefab;
     GameObject resources;
     GameObject water;
     GameObject lava;
@@ -329,15 +330,23 @@ public class Environment : MonoBehaviour
     Material treeMaterial;
     Mesh treeMesh;
 
+    GameObject lava1;
+    Material lava1Material;
+    Mesh lava1Mesh;
+
     public void initTerrain(Dictionary<string, object> packet)
     {
         this.root = GameObject.Find("Environment/Terrain");
         this.resources = GameObject.Find("Client/Environment/Terrain/Resources");
         this.cubeMatl = Resources.Load("Prefabs/Tiles/CubeMatl") as Material;
         this.cubePrefab = Resources.Load("Prefabs/Cube") as GameObject;
-        this.forestPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Reed") as GameObject;
-        this.orerockPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/RockGrey1") as GameObject;
-        this.treePrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Tree") as GameObject;
+        //this.forestPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Reed") as GameObject;
+        this.forestPrefab = Resources.Load("Prefabs/Reed") as GameObject;
+        //this.orerockPrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/RockGrey1") as GameObject;
+        this.orerockPrefab = Resources.Load("Prefabs/Orerock") as GameObject;
+        //this.treePrefab = Resources.Load("LowPoly Style/Free Rocks and Plants/Prefabs/Tree") as GameObject;
+        this.treePrefab = Resources.Load("Prefabs/Tree") as GameObject;
+        this.lava1Prefab = Resources.Load("Prefabs/Lava 1") as GameObject;
         this.console = GameObject.Find("Console").GetComponent<Console>();
         this.shader = Shader.Find("Standard");
         this.cameraAnchor = GameObject.Find("CameraAnchor");
@@ -401,6 +410,10 @@ public class Environment : MonoBehaviour
         this.tree = Instantiate(this.treePrefab) as GameObject;
         this.treeMaterial = tree.GetComponent<MeshRenderer>().material;
         this.treeMesh = tree.GetComponent<MeshFilter>().sharedMesh;
+
+        this.lava1 = Instantiate(this.lava1Prefab) as GameObject;
+        this.lava1Material = lava1.GetComponent<MeshRenderer>().material;
+        this.lava1Mesh = lava1.GetComponent<MeshFilter>().sharedMesh;
 
         int R = Consts.CHUNKS() / 2;
         int x = 0;
@@ -799,6 +812,18 @@ public class Environment : MonoBehaviour
                     this.entityManager.AddComponentData(entity, new NonUniformScale { Value = new float3(0.25f, 0.4f, 0.25f) });
                     this.entityManager.AddComponentData(entity, new RenderBounds { Value = treeMesh.bounds.ToAABB() });
                     this.entityManager.AddSharedComponentData(entity, new RenderMesh { mesh = treeMesh, material = treeMaterial });
+
+                    chunk.SetTile(R + r, C + c, entity);
+                }
+                if (name == "Lava")
+                {
+                    this.entityManager.AddComponentData(entity, new Translation { Value = new float3(R + r, -0.5f, C + c) });
+                    //this.entityManager.AddComponentData(entity, new Rotation { Value = quaternion.Euler(new float3(0, UnityEngine.Random.Range(0, 360), 0)) });
+                    this.entityManager.AddComponentData(entity, new NonUniformScale { Value = new float3(1f, 1f, 1f) });
+                    this.entityManager.AddComponentData(entity, new RenderBounds { Value = lava1Mesh.bounds.ToAABB() });
+                    this.entityManager.AddSharedComponentData(entity, new RenderMesh { mesh = lava1Mesh, material = lava1Material });
+                    //this.entityManager.AddComponentData(entity, new RenderBounds { Value = treeMesh.bounds.ToAABB() });
+                    //this.entityManager.AddSharedComponentData(entity, new RenderMesh { mesh = treeMesh, material = treeMaterial });
 
                     chunk.SetTile(R + r, C + c, entity);
                 }
