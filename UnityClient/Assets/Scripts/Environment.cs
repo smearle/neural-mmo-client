@@ -206,6 +206,7 @@ public class EnvMaterials : MonoBehaviour
         this.idxStrs.Add(5, "Stone");
         this.AddBlock("Orerock", 0, 6);
         this.AddBlock("Tree", 0, 7);
+        this.AddBlock("Grass", 0, 8);
 
         string matKeys = "0a 1a 2a 2b 2c 3a 3b 3c 4a 4b 4c 4d 4e 4f";
         foreach (string key in matKeys.Split(' '))
